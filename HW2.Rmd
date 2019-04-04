@@ -1,0 +1,65 @@
+---
+title: "HW2"
+author: "MariaRomanova"
+output: pdf_document
+---
+
+```{r}
+library("datasets")
+```
+
+```{r}
+work_with_dataset <- function(data, rows, columns, operation) {
+  calculation_v <- c()
+  subsetting    <- data.frame(data[rows, columns])
+  for (i in seq_along(columns)) {
+    if (is.numeric(subsetting[,i])) {
+      calculation_v[i] <- operation(subsetting[,i])
+    } else {
+      calculation_v    <- table(subsetting[,i])
+    }
+  }
+  return(list(calculation_v))
+}
+```
+
+```{r}
+data = Orange
+work_with_dataset(data, c(1,2,3), c('age'), mean)
+```
+```{r}
+data = mtcars
+work_with_dataset(data, c(1,2,3),c('mpg'),sd)
+```
+```{r}
+work_with_dataset_2 <- function(data, rows, columns, operation) {
+  subsetting    <- data.frame(data[rows, columns])
+  num_operation <- function(x, operation) {
+    if (is.numeric(x)) {
+      return(operation(x))
+    } else {
+      return(table(x))
+      
+    }
+  }
+  calculate <- sapply(subsetting, num_operation, operation)
+  return(list(subsetting, calculate))
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
