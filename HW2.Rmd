@@ -11,7 +11,7 @@ library("datasets")
 ```{r}
 work_with_dataset <- function(data, rows, columns, operation) {
   # data=dataset, operation - any operation over data
-  subsetting <- data.frame(data[rows,columns])
+  subsetting <- data[rows,columns, drop = F]
   # subset the dataset
   output     <- list()
   for (col_name in colnames(subsetting)) {
