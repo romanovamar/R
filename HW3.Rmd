@@ -1,0 +1,21 @@
+---
+title: "HW3"
+author: "MariaRomanova"
+date: "12 04 2019"
+output: pdf_document
+---
+```{r}
+work_with_dataset_2 <- function(data, rows, columns, operation) {
+  subsetting    <- data.frame(data[rows, columns])
+  num_operation <- function(x, operation) {
+    if (is.numeric(x)) {
+      return(operation(x))
+    } else {
+      return(table(x))
+    }
+  }
+  calculate <- sapply(subsetting, num_operation, operation)
+  return(list(subsetting, calculate))
+}
+```
+
