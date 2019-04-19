@@ -1,0 +1,79 @@
+---
+title: "Hw4"
+author: "MariaRomanova"
+output: pdf_document
+---
+## First of all raw data is needed, and assume that file in current directory 
+```{r}
+weather = readRDS('./weather.rds')
+```
+## Quick look at the data:
+###1 Measure column looks unnormal (X* variables must be days)
+###2 All X* columns are of class character
+###3 There are not complete cases with NA data
+
+```{r}
+head(weather, 10)
+sum(complete.cases(weather))
+summary(weather)
+sum(duplicated(weather))
+```
+## Library will be tidyr and stringr
+```{r}
+library(stringr)
+library(tidyr)
+library(dplyr)
+```
+## It seems wrong that months and years are rows and days are colunms, and logicaly it should be columns: days, months, years, and then all measures; rows: measured data
+```{r}
+weather <- gather(weather, day, data, colnames(weather[5:35]))
+```
+
+```{r}
+weather <- weather[,-1]
+weather <- spread(weather, key = measure, value = data)
+```
+```{r,error=FALSE}
+weather <- weather %>% 
+  mutate(day = extract_numeric(day))
+```
+
+```{r}
+weather <- arrange(weather, year, month,day)
+```
+
+### Get rid of 'T' in PrecipitationIn collumn and replace with NA
+```{r}
+weather$PrecipitationIn <- gsub('T', NA, weather$PrecipitationIn)
+```
+### Next changing of class to numeric
+
+```{r}
+weather[,-5] <- lapply(weather[,-5], as.numeric)
+weather$Events <- as.factor(weather$Events)
+```
+
+
+
+
+### Piece of code can be used for delete full empty rows we can also use na.omit but not full NA rows will be deleted as well
+```{r}
+vec = c()
+f=1
+for(i in 1:length(weather$month)){
+  if (sum(is.na(weather[i,4:25])) == 22){
+    vec[f] <- i
+    f <- f+1
+  } 
+}
+weather <- weather[-c(vec),]
+```
+### And one more code which will replace blanck rows in column, because if later on this raws will needed to be omited that can be usefull, but it is optional
+```{r}
+for (i in 1:length(weather$Events)){
+  if (!grepl('^.', weather$Events[i])){
+    weather$Events[i] <- NA
+  }
+}
+```
+
