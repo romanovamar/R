@@ -1,0 +1,32 @@
+---
+title: "HW6"
+author: "MariaRomanova"
+---
+
+```{r}
+library(gapminder)
+library(ggplot2)
+library(datasets)
+library(dplyr)
+```
+
+```{r}
+iris_long <- iris %>%
+ transmute(Species, Part = 'Sepal', Length = Sepal.Length, Width =Sepal.Width,)
+iris_long1 <- iris %>%
+  transmute(Species, Part = 'Petal', Length = Petal.Length, Width = Petal.Width)
+iris_long <- rbind(iris_long,iris_long1)
+```
+
+```{r}
+ggplot(iris_long, aes(x = Length, y = Width, color = Part)) +
+  geom_point(shape = 20)
+```
+
+
+
+
+
+
+
+
