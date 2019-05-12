@@ -12,7 +12,7 @@ library(dplyr)
 
 ```{r}
 iris_long <- iris %>%
- transmute(Species, Part = 'Sepal', Length = Sepal.Length, Width =Sepal.Width,)
+ transmute(Species, Part = 'Sepal', Length = Sepal.Length, Width =Sepal.Width)
 iris_long1 <- iris %>%
   transmute(Species, Part = 'Petal', Length = Petal.Length, Width = Petal.Width)
 iris_long <- rbind(iris_long,iris_long1)
@@ -24,17 +24,25 @@ ggplot(iris_long, aes(x = Length, y = Width, color = Part)) +
 ```
 
 ```{r}
-data <- gapminder::gapminder %>%
+year_2007 <- gapminder %>%
   filter(year==2007)
 ```
 
 ```{r}
 options(scipen=999)
-theme_set(theme_bw()) 
-ggplot(data, aes(x = gdpPercap, color = continent)) +
+theme_set(theme_gray()) 
+ggplot(year_2007, aes(x = gdpPercap, color = continent)) +
   geom_point(aes(y = lifeExp, size = pop)) 
 ```
+```{r}
+df <- aggregate(lifeExp ~ year + continent, data = gapminder, mean)
+```
 
+```{r}
+ggplot(df, aes(x = year, y = lifeExp, color = continent)) +
+  geom_point() +
+  ylim(0, max(df$lifeExp))
+```
 
 
 
