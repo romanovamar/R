@@ -55,5 +55,11 @@ ggplot(df, aes(x = year, y = pop, color = continent)) +
   scale_y_log10()
 ```
 
+```{r}
+df <- aggregate(gdpPercap ~ year + continent, data = gapminder, mean) 
+ggplot(df, aes(x = gdpPercap,color = continent)) +
+  geom_density_2d(aes(y = year)) +
+  facet_grid(continent ~ .)
+```
 
 
