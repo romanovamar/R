@@ -23,7 +23,17 @@ ggplot(iris_long, aes(x = Length, y = Width, color = Part)) +
   geom_point(shape = 20)
 ```
 
+```{r}
+data <- gapminder::gapminder %>%
+  filter(year==2007)
+```
 
+```{r}
+options(scipen=999)
+theme_set(theme_bw()) 
+ggplot(data, aes(x = gdpPercap, color = continent)) +
+  geom_point(aes(y = lifeExp, size = pop)) 
+```
 
 
 
