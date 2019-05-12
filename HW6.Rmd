@@ -44,7 +44,16 @@ ggplot(df, aes(x = year, y = lifeExp, color = continent)) +
   ylim(0, max(df$lifeExp))
 ```
 
+```{r}
+df <- aggregate(pop ~ year + continent, data = gapminder, sum)
+```
 
+```{r}
+ggplot(df, aes(x = year, y = pop, color = continent)) +
+  geom_point() + 
+  geom_line() +
+  scale_y_log10()
+```
 
 
 
