@@ -1,0 +1,36 @@
+---
+title: "HW7"
+author: "MariaRomanova"
+date: "12 05 2019"
+output: pdf_document
+---
+
+```{r}
+library(gapminder)
+library(ggplot2)
+library(datasets)
+library(dplyr)
+```
+
+```{r}
+theme_set(theme_gray()) 
+```
+
+```{r}
+ggplot(gapminder, aes(x = gdpPercap, color = continent)) +
+  geom_point(aes(y = lifeExp, size = pop)) +
+  facet_wrap(~year) +
+  scale_x_log10()
+```
+
+
+```{r}
+airquality %>% tidyr::gather("id", "value", 1:4) %>% 
+  ggplot(aes(x=Day,y=value, col = id)) +
+    geom_line() +
+    geom_point(na.rm = T)+
+    facet_wrap(id ~ Month) 
+
+```
+
+
