@@ -1,7 +1,6 @@
 ---
 title: "HW7"
 author: "MariaRomanova"
-date: "12 05 2019"
 output: pdf_document
 ---
 
@@ -23,14 +22,29 @@ ggplot(gapminder, aes(x = gdpPercap, color = continent)) +
   scale_x_log10()
 ```
 
-
 ```{r}
 airquality %>% tidyr::gather("id", "value", 1:4) %>% 
   ggplot(aes(x=Day,y=value, col = id)) +
     geom_line() +
-    geom_point(na.rm = T)+
-    facet_wrap(id ~ Month) 
-
+    geom_point(na.rm = T) +
+    facet_grid(id ~ Month, scales = "free_y") 
 ```
+
+```{r}
+ggplot(mpg, aes(class, cty, fill = class)) +
+  geom_violin() + 
+  ggtitle("City Mileage vs Class of vehicle")  +
+  xlab("Class of Vehicle") +
+  ylab("City Mileage")
+```
+
+```{r}
+ggplot(mpg, aes(cty)) +
+  geom_density(aes(fill=factor(cyl)), alpha=0.8) + 
+  ggtitle("City Mileage Grouped by Number of cylinders")  +
+  xlab("City Mileage") 
+```
+
+
 
 
