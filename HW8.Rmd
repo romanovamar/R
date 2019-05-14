@@ -1,0 +1,78 @@
+---
+title: "HW8"
+author: "MariaRomanova"
+date: "10 05 2019"
+output: pdf_document
+---
+```{r}
+library(ggplot2)
+library(dplyr)
+library(plyr)
+```
+
+```{r}
+p <- ggplot(adult, aes(SRAGE_P, fill = as.factor(RBMI))) + geom_histogram(binwidth = 1) 
+```
+
+```{r}
+adult_clean <- filter(adult, SRAGE_P < 85)
+adult_clean <- filter(adult_clean,BMI_P >= 16 & BMI_P <= 52)
+```
+
+```{r}
+vec = c('Latino','Asian','African American','White')
+adult_clean$RACEHPR2 <- factor(adult_clean$RACEHPR2, labels=vec)
+```
+```{r}
+vec = c('Underweight','Normalweight','Overweight','Obesity')
+adult_clean$RBMI <- factor(adult_clean$RBMI, labels=vec)
+```
+
+```{r}
+for(i in 1:length(adult_clean$RBMI)){
+    if(adult_clean$RBMI[i] == 1) adult_clean$RBMI[i] <- 'Underweight'
+    if(adult_clean$RBMI[i] == 2) adult_clean$RBMI[i] <- 'Normalweight'
+    if(adult_clean$RBMI[i] == 3) adult_clean$RBMI[i] <- 'Overweight'
+    if(adult_clean$RBMI[i] == 4) adult_clean$RBMI[i] <- 'Obesity'
+    }
+```
+
+```{r}
+ggplot(adult_clean, aes(SRAGE_P, fill = as.factor(RBMI))) + 
+  geom_histogram(binwidth = 1) + 
+  facet_grid(RBMI ~ ., scales = 'free_y') + 
+  theme_classic() + 
+  theme(strip.text.y = element_blank()) + 
+  scale_fill_brewer(palette="Reds")
+```
+
+```{r}
+ggplot(adult_clean, aes(SRAGE_P, fill = as.factor(RBMI))) + 
+  geom_histogram(binwidth = 1, position = 'fill') + 
+  theme_classic() + 
+  theme(strip.text.y = element_blank()) + 
+  scale_fill_brewer(palette="Reds")
+```
+```{r}
+ggplot(adult_clean, aes(SRAGE_P, fill = as.factor(RBMI))) + 
+  geom_histogram(binwidth = 1, position = 'fill') + 
+  facet_grid(RBMI ~ .) +
+  theme_classic() + 
+  theme(strip.text.y = element_blank()) + 
+  scale_fill_brewer(palette="Reds")
+```
+
+```{r}
+proportion <- dcast(adult_clean, SRAGE_P ~ RBMI, length)
+proportion
+```
+
+```{r}
+proportion %>% tidyr::gather("id", "value", 2:5) %>% 
+  ggplot(aes(x=SRAGE_P,y=value, col = id)) +
+    geom_line() +
+    geom_col() +
+    facet_grid(~id) +
+    theme_classic() 
+```
+
